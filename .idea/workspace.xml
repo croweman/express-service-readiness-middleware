@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="12a53149-b02e-4c92-a851-a63fd6bedf48" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MBfDBI9NH0cBGiFFwPQ33AT300" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/leecrowe/dev/croweman/express-service-readiness-middleware&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;/Users/leecrowe/dev/croweman/express-service-readiness-middleware/node_modules/jest&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/leecrowe/dev/croweman/express-service-readiness-middleware/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Jest.index.test.ts">
+    <configuration name="Readiness middleware.executes next middleware" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/tests/index.test.ts" />
+      <test-names>
+        <test-name value="Readiness middleware" />
+        <test-name value="executes next middleware" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Readiness middleware.executes next middleware.when the critical dependency is not ready on first try but ready on second" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/tests/index.test.ts" />
+      <test-names>
+        <test-name value="Readiness middleware" />
+        <test-name value="executes next middleware" />
+        <test-name value="when the critical dependency is not ready on first try but ready on second" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="express-service-readiness-middleware" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/tests/index.test.ts" />
+      <test-names>
+        <test-name value="express-service-readiness-middleware" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="express-service-readiness-middleware.checkDependenciesHealth.does something" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/tests/index.test.ts" />
+      <test-names>
+        <test-name value="express-service-readiness-middleware" />
+        <test-name value="checkDependenciesHealth" />
+        <test-name value="does something" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="index.test.ts" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST_FILE" />
+      <test-file value="$PROJECT_DIR$/tests/index.test.ts" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Jest.index.test.ts" />
+        <item itemvalue="Jest.express-service-readiness-middleware" />
+        <item itemvalue="Jest.express-service-readiness-middleware.checkDependenciesHealth.does something" />
+        <item itemvalue="Jest.Readiness middleware.executes next middleware.when the critical dependency is not ready on first try but ready on second" />
+        <item itemvalue="Jest.Readiness middleware.executes next middleware" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="12a53149-b02e-4c92-a851-a63fd6bedf48" name="Changes" comment="" />
+      <created>1677245774145</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1677245774145</updated>
+      <workItem from="1677245775817" duration="4689000" />
+      <workItem from="1677250631501" duration="629000" />
+      <workItem from="1678350372406" duration="5202000" />
+      <workItem from="1678357570322" duration="12194000" />
+      <workItem from="1678800167667" duration="1892000" />
+      <workItem from="1678891592154" duration="1783000" />
+      <workItem from="1678974970263" duration="596000" />
+      <workItem from="1678979608041" duration="4254000" />
+      <workItem from="1679046198983" duration="16000" />
+      <workItem from="1679066215264" duration="1736000" />
+      <workItem from="1679213140027" duration="2215000" />
+      <workItem from="1679300095407" duration="1369000" />
+      <workItem from="1679301487836" duration="3568000" />
+      <workItem from="1679305081992" duration="2038000" />
+      <workItem from="1679308750563" duration="10072000" />
+      <workItem from="1679389142317" duration="5760000" />
+      <workItem from="1679472494156" duration="4513000" />
+      <workItem from="1679668737461" duration="598000" />
+      <workItem from="1679672698416" duration="1796000" />
+      <workItem from="1682685350733" duration="19680000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/lib/index.ts</url>
+          <line>148</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/tests/index.test.ts</url>
+          <line>323</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
