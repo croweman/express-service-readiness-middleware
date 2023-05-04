@@ -1,10 +1,10 @@
 # express-service-readiness-middleware
 
-This module provides Express middleware for determining whether routes are exposed based on service critical dependency health. 
+This module provides express middleware for determining whether routes are exposed based on service critical dependency health. 
 
 Routes will still be exposed if non-critical dependencies are not ready.
 
-Routes can also be whitelisted to be exposed if dependencies are not yet ready.
+Routes can also be whitelisted to be exposed if critical dependencies are not yet ready.
 
 ## Installation
 
