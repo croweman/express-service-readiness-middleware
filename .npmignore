@@ -1,3 +1,4 @@
+dist/tests
 lib/
 node_modules/
 .idea/
