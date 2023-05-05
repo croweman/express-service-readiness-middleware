@@ -1,10 +1,12 @@
 # express-service-readiness-middleware
 
-This module provides express middleware for determining whether routes are exposed based on service critical dependency health. 
+This module provides express middleware for determining whether routes are exposed based on service critical dependency health.
 
-Routes will still be exposed if non-critical dependencies are not ready.
+When critical dependencies are not ready a `502` status code will be returned for non whitelisted routes.
 
-Routes can also be whitelisted to be exposed if critical dependencies are not yet ready.
+Routes will still be exposed if non-critical dependencies are not ready!
+
+Specific routes can also be whitelisted to be exposed if critical dependencies are not yet ready.
 
 ## Installation
 
@@ -40,7 +42,7 @@ const dependencies = [
 ]
 
 // register the middleware, ideally you would do this before all other middlware
-const config:IConfig = { whitelistedPaths: [ '/liveness' ]}
+const config = { whitelistedPaths: [ '/liveness' ]}
 app.use(createReadinessMiddleware(dependencies, config))
 
 // check dependency health
@@ -62,10 +64,10 @@ console.log(JSON.stringify(health, null, 2))
 
 ## API
 
-## create the middleware
+## createReadinessMiddleware
 
 ```js
-const readinessMiddleware = createReadinessMiddleware(dependencies, options)
+const readinessMiddleware = createReadinessMiddleware(dependencies, config)
 ```
 
 ### dependencies
@@ -79,7 +81,7 @@ Array of dependency objects.  A dependency has the following properties:
 - `isHealthy`: (Promise<boolean>) Indicates whether the dependency is healthy
 - `retryIntervalInMilliseconds`: (number) Interval in milliseconds in which to check if the dependency is ready
 
-### options (optional)
+### config (optional)
 
 - `retryIntervalInMilliseconds`: (default: `2000`) Interval in milliseconds in which to check if a dependency is ready.
 - `maximumWaitTimeForServiceReadinessInMilliseconds`: (default: `30000`) Maximum time in milliseconds to wait for all dependencies to be ready.
