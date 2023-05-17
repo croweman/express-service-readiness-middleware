@@ -78,7 +78,7 @@ Array of dependency objects.  A dependency has the following properties:
 - `data`: (object) Informational data about the dependency
 - `critical`: (boolean) Indicates whether the dependency is critical
 - `isReady`: (Promise<boolean>) Indicates whether the dependency is ready
-- `isHealthy`: (Promise<boolean>) Indicates whether the dependency is healthy
+- `isHealthy`: (optional, Promise<boolean>) Indicates whether the dependency is healthy. `isReady` is used if not defined.
 - `retryIntervalInMilliseconds`: (number) Interval in milliseconds in which to check if the dependency is ready
 
 ### config (optional)
