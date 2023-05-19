@@ -14,15 +14,20 @@ Specific routes can also be whitelisted to be exposed if critical dependencies a
 With [npm](http://npmjs.org)
 
 ```bash  
-$ npm install express-service-readiness-middleware --save```  
+$ npm install express-service-readiness-middleware@1.0.8 --save
+```  
   
 ## Example usage  
   
 ```js  
 const {  
- checkDependenciesHealth, createReadinessMiddleware, setLogger} = require('express-service-readiness-middleware')  
+  checkDependenciesHealth, 
+  createReadinessMiddleware,
+  criticalDependenciesReady
+  setLogger
+} = require('express-service-readiness-middleware')
   
-// if s logger is not set no informational logging will occur.  Logging can be set using the 'setLogger' function.  The object must have a 'log' function.  
+// if a logger is not set no informational logging will occur.  Logging can be set using the 'setLogger' function.  The object must have a 'log' function.  
 setLogger(console)  
   
 // create dependencies  
@@ -42,6 +47,9 @@ console.log(JSON.stringify(health, null, 2))
 {  
  "name": "dependency-one", "critical": true, "data":  { "connectionString": "protocol:://{user}:{password}/test", }, "healthy": true}  
 */  
+
+// check whether all critical dependencies are ready
+const ready = criticalDependenciesReady()
 ```  
 
 ## API
@@ -77,7 +85,23 @@ The `checkDependenciesHealth` will check all dependencies health and return a re
 
 ```js  
 const health = await checkDependenciesHealth(dependencies)  
-```  
+```
+
+## criticalDependenciesReady
+
+Boolean function that can be called to determine whether all critical dependencies are ready.
+
+```js  
+const ready = criticalDependenciesReady()
+```
+
+## stopCheckingReadiness
+
+Stops checking whether service dependencies are ready
+
+```js  
+stopCheckingReadiness()
+```
 
 ## License
 

@@ -150,9 +150,14 @@ export const setLogger = (logger: ILogger): void => {
 }
 
 /**
+ * Returns a boolean indicating whether all critical dependencies are ready
+ */
+export const criticalDependenciesReady = (): Boolean => ready
+
+/**
  * Removes any NodeJS.Timeout instances created by the middleware
  */
-export const stopCheckingReadiness = () => {
+export const stopCheckingReadiness = (): void => {
     if (maximumWaitTimeTimeout) {
         clearTimeout(maximumWaitTimeTimeout)
     }

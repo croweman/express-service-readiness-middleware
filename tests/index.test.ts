@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
     checkDependenciesHealth,
     createReadinessMiddleware,
+    criticalDependenciesReady,
     IDependency,
     setLogger,
     stopCheckingReadiness
@@ -61,6 +62,8 @@ describe('express-service-readiness-middleware', () => {
                     // @ts-ignore
                     middleware(request, response, () => {
                         console.log('We are ready')
+                        if (criticalDependenciesReady() !== true)
+                            throw Error('Critical dependencies are not ready')
                         resolve({});
                     })
                 })
@@ -95,6 +98,8 @@ describe('express-service-readiness-middleware', () => {
                     middleware(request, response, () => {
                         console.log('We are ready')
                         expect(dependencyResolved).toEqual(true)
+                        if (criticalDependenciesReady() !== true)
+                            throw Error('Critical dependencies are not ready')
                         resolve({});
                     })
                 })
@@ -157,6 +162,8 @@ describe('express-service-readiness-middleware', () => {
                     }
 
                     expect(resolved).toEqual(true)
+                    if (criticalDependenciesReady() !== true)
+                        throw Error('Critical dependencies are not ready')
                     resolve({})
                 })
             })
@@ -234,6 +241,8 @@ describe('express-service-readiness-middleware', () => {
                     }
 
                     expect(resolved).toEqual(true)
+                    if (criticalDependenciesReady() !== true)
+                        throw Error('Critical dependencies are not ready')
                     resolve({})
                 })
             })
@@ -292,6 +301,8 @@ describe('express-service-readiness-middleware', () => {
                     }
 
                     expect(resolved).toEqual(true)
+                    if (criticalDependenciesReady() !== true)
+                        throw Error('Critical dependencies are not ready')
                     resolve({})
                 })
             })
