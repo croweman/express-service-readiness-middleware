@@ -127,7 +127,7 @@ export const checkDependenciesHealth = async(dependencies: IDependency[]): Promi
             informationLogger?.log(`critical dependency '${dependency.name}' is not healthy`)
         } catch (err) {
             // @ts-ignore
-            informationLogger?.log(`An error occurred while checking health for dependency'${dependencyStateItem.name}', error: ${err.message || err}`)
+            informationLogger?.log(`An error occurred while checking health for dependency '${dependencyStateItem.name}', error: ${err.message || err}`)
         }
 
         dependenciesHealth.push({
@@ -231,7 +231,7 @@ const checkDependencyReadiness = async (dependencyStateItem: IDependencyStateIte
         informationLogger?.log(`critical dependency '${dependencyStateItem.name}' is not ready yet`)
     } catch (err) {
         // @ts-ignore
-        informationLogger?.log(`An error occurred while checking health for critical dependency'${dependencyStateItem.name}', error: ${err.message || err}`)
+        informationLogger?.log(`An error occurred while checking health for critical dependency '${dependencyStateItem.name}', error: ${err.message || err}`)
     }
 
     const checkHealthAgain = () => checkDependencyReadiness(dependencyStateItem)
