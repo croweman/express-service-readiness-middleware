@@ -110,30 +110,23 @@ export const createReadinessMiddleware = (dependencies: IDependency[], config?: 
  * Checks the health of all dependencies
  * @param dependencies - Array of {IDependency} objects
  */
-export const checkDependenciesHealth = async(dependencies: IDependency[]): Promise<IDependencyHealth[]> => {
+export const checkDependenciesHealth = async (dependencies: IDependency[]): Promise<IDependencyHealth[]> => {
     const dependenciesHealth:IDependencyHealth[] = []
+    const promises: Promise<boolean>[] = []
 
     for (const dependency of dependencies) {
-        let healthy = false
+        promises.push(checkDependencyHealth(dependency))
+    }
 
-        try {
-            const healthyFunc = dependency.isHealthy ? dependency.isHealthy : dependency.isReady
-            healthy = await healthyFunc()
+    const promiseResults = await Promise.allSettled(promises)
 
-            if (healthy) {
-                informationLogger?.log(`critical dependency '${dependency.name}' is healthy`)
-            }
-
-            informationLogger?.log(`critical dependency '${dependency.name}' is not healthy`)
-        } catch (err) {
-            // @ts-ignore
-            informationLogger?.log(`An error occurred while checking health for dependency '${dependencyStateItem.name}', error: ${err.message || err}`)
-        }
-
+    for (let i = 0; i < dependencies.length; i++) {
+        const dependency = dependencies[i]
+        const promiseResult = promiseResults[i]
         dependenciesHealth.push({
             name: dependency.name,
             data: dependency.data,
-            healthy,
+            healthy: promiseResult.status === 'fulfilled' && promiseResult.value,
             critical: dependency.critical
         })
     }
@@ -166,6 +159,26 @@ export const stopCheckingReadiness = (): void => {
         if (dependencyStateItem.timeoutId)
             clearTimeout(dependencyStateItem.timeoutId)
     }
+}
+
+const checkDependencyHealth = async (dependency: IDependency): Promise<boolean> => {
+    let healthy = false
+
+    try {
+        const healthyFunc = dependency.isHealthy ? dependency.isHealthy : dependency.isReady
+        healthy = await healthyFunc()
+
+        if (healthy) {
+            informationLogger?.log(`critical dependency '${dependency.name}' is healthy`)
+        }
+
+        informationLogger?.log(`critical dependency '${dependency.name}' is not healthy`)
+    } catch (err) {
+        // @ts-ignore
+        informationLogger?.log(`An error occurred while checking health for dependency '${dependencyStateItem.name}', error: ${err.message || err}`)
+    }
+
+    return healthy
 }
 
 const maximumWaitTimeExceeded = () => {
