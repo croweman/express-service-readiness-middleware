@@ -38,6 +38,16 @@ export interface IDependency {
     retryIntervalInMilliseconds?: number
 }
 
+/** Dependencies Health interface */
+export interface IDependenciesHealth {
+    /** indicates whether all dependencies are healthy */
+    allDependenciesHealthy: boolean
+    /** indicates whether all critical dependencies are healthy */
+    allCriticalDependenciesHealthy: boolean
+    /** health information about all dependencies */
+    dependencies: IDependencyHealth[]
+}
+
 /** Dependency health interface */
 export interface IDependencyHealth {
     /** the name of the dependency */
@@ -110,9 +120,11 @@ export const createReadinessMiddleware = (dependencies: IDependency[], config?: 
  * Checks the health of all dependencies
  * @param dependencies - Array of {IDependency} objects
  */
-export const checkDependenciesHealth = async (dependencies: IDependency[]): Promise<IDependencyHealth[]> => {
+export const checkDependenciesHealth = async (dependencies: IDependency[]): Promise<IDependenciesHealth> => {
     const dependenciesHealth:IDependencyHealth[] = []
     const promises: Promise<boolean>[] = []
+    let allDependenciesHealthy = true
+    let allCriticalDependenciesHealthy = true
 
     for (const dependency of dependencies) {
         promises.push(checkDependencyHealth(dependency))
@@ -123,15 +135,27 @@ export const checkDependenciesHealth = async (dependencies: IDependency[]): Prom
     for (let i = 0; i < dependencies.length; i++) {
         const dependency = dependencies[i]
         const promiseResult = promiseResults[i]
+        const healthy = promiseResult.status === 'fulfilled' && promiseResult.value
         dependenciesHealth.push({
             name: dependency.name,
             data: dependency.data,
-            healthy: promiseResult.status === 'fulfilled' && promiseResult.value,
+            healthy,
             critical: dependency.critical
         })
+
+        if (!healthy) {
+            allDependenciesHealthy = false
+
+            if (dependency.critical)
+                allCriticalDependenciesHealthy = false
+        }
     }
     
-    return dependenciesHealth
+    return {
+        allDependenciesHealthy,
+        allCriticalDependenciesHealthy,
+        dependencies: dependenciesHealth
+    }
 }
 
 /**

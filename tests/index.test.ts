@@ -334,25 +334,28 @@ describe('express-service-readiness-middleware', () => {
 
             const dependenciesHealth = await checkDependenciesHealth(dependencies)
 
-            expect(dependenciesHealth).toEqual([
-                {
-                    "name": "dependency-1",
-                    "data": {
-                        "url": "https://api.co.uk"
+            expect(dependenciesHealth).toEqual({
+                "allDependenciesHealthy": false,
+                "allCriticalDependenciesHealthy": true,
+                "dependencies": [
+                    {
+                        "name": "dependency-1",
+                        "data": {
+                            "url": "https://api.co.uk"
+                        },
+                        "healthy": true,
+                        "critical": true
                     },
-                    "healthy": true,
-                    "critical": true
-                },
-                {
-                    "name": "dependency-2",
-                    "data": {
-                        "connectionString": "protocol:://{user}:{password}/test"
-                    },
-                    "healthy": false,
-                    "critical": false
-                }
-            ])
-
+                    {
+                        "name": "dependency-2",
+                        "data": {
+                            "connectionString": "protocol:://{user}:{password}/test"
+                        },
+                        "healthy": false,
+                        "critical": false
+                    }
+                ]
+            })
         })
     })
 })

@@ -23,7 +23,7 @@ $ npm install express-service-readiness-middleware@1.0.10 --save
 const {  
   checkDependenciesHealth, 
   createReadinessMiddleware,
-  criticalDependenciesReady
+  criticalDependenciesReady,
   setLogger
 } = require('express-service-readiness-middleware')
   
@@ -44,9 +44,21 @@ const health = await checkDependenciesHealth(dependencies)
 console.log(JSON.stringify(health, null, 2))  
 /*  
 ^^ would output:  
-{  
- "name": "dependency-one", "critical": true, "data":  { "connectionString": "protocol:://{user}:{password}/test", }, "healthy": true}  
-*/  
+{
+  "allDependenciesHealthy": true,
+  "allCriticalDependenciesHealthy": true,  
+  "dependencies": [
+    {
+      name": "dependency-one",
+      "critical": true, 
+      "data": {
+        "connectionString": "protocol:://{user}:{password}/test", },
+        "healthy": true
+      }
+    }
+  ]
+}  
+*/
 
 // check whether all critical dependencies are ready
 const ready = criticalDependenciesReady()
@@ -81,10 +93,29 @@ Array of dependency objects.  A dependency has the following properties:
 
 You may want to periodically check or expose an endpoint to check whether dependencies are healthy.
 
-The `checkDependenciesHealth` will check all dependencies health and return a result.  `isHealthy` will be used if defined on a dependency otherwise it will fallback to `isReady`.
+The `checkDependenciesHealth` will check all dependencies health and return a result.  `isHealthy` will be used if defined on a dependency otherwise it will fall back to `isReady`.
 
 ```js  
-const health = await checkDependenciesHealth(dependencies)  
+const health = await checkDependenciesHealth(dependencies)
+
+console.log(JSON.stringify(health, null, 2))
+/*  
+^^ would output:  
+{
+  "allDependenciesHealthy": true,
+  "allCriticalDependenciesHealthy": true,  
+  "dependencies": [
+    {
+      name": "dependency-one",
+      "critical": true, 
+      "data": {
+        "connectionString": "protocol:://{user}:{password}/test", },
+        "healthy": true
+      }
+    }
+  ]
+}
+*/
 ```
 
 ## criticalDependenciesReady
