@@ -199,7 +199,7 @@ const checkDependencyHealth = async (dependency: IDependency): Promise<boolean> 
         informationLogger?.log(`critical dependency '${dependency.name}' is not healthy`)
     } catch (err) {
         // @ts-ignore
-        informationLogger?.log(`An error occurred while checking health for dependency '${dependencyStateItem.name}', error: ${err.message || err}`)
+        informationLogger?.log(`An error occurred while checking health for dependency '${dependency.name}', error: ${err.message || err}`)
     }
 
     return healthy
