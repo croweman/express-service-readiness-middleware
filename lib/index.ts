@@ -191,12 +191,7 @@ const checkDependencyHealth = async (dependency: IDependency): Promise<boolean> 
     try {
         const healthyFunc = dependency.isHealthy ? dependency.isHealthy : dependency.isReady
         healthy = await healthyFunc()
-
-        if (healthy) {
-            informationLogger?.log(`critical dependency '${dependency.name}' is healthy`)
-        }
-
-        informationLogger?.log(`critical dependency '${dependency.name}' is not healthy`)
+        informationLogger?.log(`critical dependency '${dependency.name}' is ${healthy ? 'healthy' : 'not healthy'}`)
     } catch (err) {
         // @ts-ignore
         informationLogger?.log(`An error occurred while checking health for dependency '${dependency.name}', error: ${err.message || err}`)
