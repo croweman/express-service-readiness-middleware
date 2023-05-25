@@ -1,13 +1,15 @@
 
 # express-service-readiness-middleware
 
-This module provides express middleware for determining whether routes are exposed based on service critical dependency health.
+This module provides express middleware for determining whether routes are exposed based on service critical dependencies health.
 
-When critical dependencies are not ready a `502` status code will be returned for non whitelisted routes.
+When critical dependencies are not ready the middleware will intercept requests and a `502` status code will be returned for non whitelisted routes.
 
-Routes will still be exposed if non-critical dependencies are not ready!
+Once the service has been deemed ready it will be ready for its lifetime. So if a critical dependency goes down a `502` status code WILL NOT be returned for non whitelisted routes.
 
-Specific routes can also be whitelisted to be exposed if critical dependencies are not yet ready.
+Routes will still be exposed if critical dependencies are ready and non-critical dependencies are not!
+
+Specific routes can be whitelisted to be exposed if critical dependencies are not yet ready.
 
 ## Installation
 
