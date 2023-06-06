@@ -16,7 +16,7 @@ Specific routes can be whitelisted to be exposed if critical dependencies are no
 With [npm](http://npmjs.org)
 
 ```bash  
-$ npm install express-service-readiness-middleware@1.0.15 --save
+$ npm install express-service-readiness-middleware@1.0.16 --save
 ```  
   
 ## Example usage  
@@ -41,7 +41,7 @@ const dependencies = [{
      critical: true,
      isReady: () => Promise.resolve(true),
      isHealthy: () => Promise.resolve(true)
- }]  
+}]  
   
 // register the middleware, ideally you would do this before all other middlware  
 const config = { whitelistedPaths: [ '/liveness' ]}  
