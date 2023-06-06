@@ -16,7 +16,7 @@ Specific routes can be whitelisted to be exposed if critical dependencies are no
 With [npm](http://npmjs.org)
 
 ```bash  
-$ npm install express-service-readiness-middleware@1.0.10 --save
+$ npm install express-service-readiness-middleware@1.0.15 --save
 ```  
   
 ## Example usage  
@@ -32,9 +32,16 @@ const {
 // if a logger is not set no informational logging will occur.  Logging can be set using the 'setLogger' function.  The object must have a 'log' function.  
 setLogger(console)  
   
-// create dependencies  
-const dependencies = [  
- { name: 'dependency-one', data: { connectionString: 'protocol:://{user}:{password}/test' }, critical: true, isReady: () => Promise.resolve(true), isHealthy: () => Promise.resolve(true) // optional, isReady is used if not defined }]  
+// create dependencies (isHealthy is optional, isReady is used if not defined)
+const dependencies = [{ 
+     name: 'dependency-one',
+     data: { 
+         connectionString: 'protocol:://{user}:{password}/test'
+     },
+     critical: true,
+     isReady: () => Promise.resolve(true),
+     isHealthy: () => Promise.resolve(true)
+ }]  
   
 // register the middleware, ideally you would do this before all other middlware  
 const config = { whitelistedPaths: [ '/liveness' ]}  
