@@ -1,6 +1,6 @@
 {
   "name": "express-service-readiness-middleware",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "This module provides express middleware for determining whether routes are exposed based on service critical dependency health.",
   "repository": {
     "type": "git",
