@@ -16,7 +16,7 @@ Specific routes can be whitelisted to be exposed if critical dependencies are no
 With [npm](http://npmjs.org)
 
 ```bash  
-$ npm install express-service-readiness-middleware@1.0.17 --save
+$ npm install express-service-readiness-middleware@1.0.18 --save
 ```  
   
 ## Example usage  
