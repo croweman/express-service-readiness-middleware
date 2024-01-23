@@ -9,6 +9,67 @@ import {
 } from "../lib";
 
 describe('express-service-readiness-middleware', () => {
+    // @ts-ignore
+    global.ExpressServiceReadinessTests = true
+
+    describe('createReadinessMiddleware', () => {
+        it('Logs message when critical dependencies do not become healthy after a timeout period', async () => {
+            const dependencies:IDependency[] = [
+                {
+                    data: {
+                        url: "http://test-host.com/test"
+                    },
+                    critical: true,
+                    isReady: () => Promise.resolve(true),
+                    isHealthy: () => Promise.resolve(true),
+                    name: 'test',
+                    retryIntervalInMilliseconds: 20
+                },
+                {
+                    data: {
+                        url: "http://test-host2.com/test"
+                    },
+                    critical: false,
+                    isReady: () => Promise.resolve(false),
+                    isHealthy: () => Promise.resolve(false),
+                    name: 'test2',
+                    retryIntervalInMilliseconds: 20
+                },
+                {
+                    data: {
+                        url: "http://test-host3.com/test"
+                    },
+                    critical: true,
+                    isReady: () => Promise.resolve(false),
+                    isHealthy: () => Promise.resolve(false),
+                    name: 'test3',
+                    retryIntervalInMilliseconds: 20
+                }
+            ]
+
+            const messages: string[] = []
+            const logger = {
+                log: (message) => {
+                    messages.push(message)
+                }
+            }
+
+            setLogger(logger)
+
+            createReadinessMiddleware(dependencies, {
+                retryIntervalInMilliseconds: 10,
+                maximumWaitTimeForServiceReadinessInMilliseconds: 1000,
+                logOutCriticalDependenciesOnFailure: true
+            })
+
+            await waitUntil(() => {
+                const message = messages.find(x => x.startsWith('All critical dependencies'))
+                expect(message).toBeDefined()
+                expect(message).toEqual('All critical dependencies did not become healthy. Critical dependencies: [{"name":"test","data":{"url":"http://test-host.com/test"},"ready":true},{"name":"test3","data":{"url":"http://test-host3.com/test"},"ready":false}]')
+            })
+        })
+    })
+
     describe('Readiness middleware', () => {
         jest.setTimeout(10 * 1000)
 
@@ -247,7 +308,7 @@ describe('express-service-readiness-middleware', () => {
                 })
             })
 
-            it('when the when the critical dependency is not ready and path is whitelisted the route should be called', async () => {
+            it('when the critical dependency is not ready and path is whitelisted the route should be called', async () => {
                 // @ts-ignore
                 return new Promise(async (resolve) => {
                     // @ts-ignore
@@ -361,4 +422,24 @@ describe('express-service-readiness-middleware', () => {
 })
 
 
-const sleep = async () => new Promise((resolve) => { setTimeout(resolve, 10) })
+const sleep = async (timeout: number = 10) => new Promise((resolve) => { setTimeout(resolve, timeout) })
+
+const waitUntil = (assertionFunc: () => void, failureMessage: string = 'expectations were not met', timeout: number = 5000) => {
+    return new Promise((resolve, reject) => {
+        let timeoutId
+        const intervalId = setInterval(() => {
+            try {
+                assertionFunc()
+                clearTimeout(timeoutId)
+                clearInterval(intervalId)
+                resolve({})
+            } catch {
+                // do nothing
+            }
+        }, 10)
+        timeoutId = setTimeout(() => {
+            clearInterval(intervalId)
+            reject(failureMessage)
+        }, timeout)
+    })
+}

@@ -14,12 +14,15 @@ export interface IConfig {
     maximumWaitTimeForServiceReadinessInMilliseconds?: number
     /** paths to still route traffic to even if dependencies are not yet ready, default empty array */
     whitelistedPaths?: string[]
+    /** indicates whether critical dependency information should be logged out if critical dependencies fail to become ready */
+    logOutCriticalDependenciesOnFailure?: boolean
 }
 
 const DefaultConfig:IConfig = {
     retryIntervalInMilliseconds: 2000,
     maximumWaitTimeForServiceReadinessInMilliseconds: 30000,
-    whitelistedPaths: []
+    whitelistedPaths: [],
+    logOutCriticalDependenciesOnFailure: true
 }
 
 /** Dependency interface */
@@ -200,12 +203,27 @@ const checkDependencyHealth = async (dependency: IDependency): Promise<boolean> 
     return healthy
 }
 
-const maximumWaitTimeExceeded = () => {
-    stopCheckingReadiness()
-    informationLogger?.log('All critical dependencies did not become healthy')
-    // @ts-ignore
-    if (global.ExpressServiceReadinessTests === undefined)
-        process.exit(1)
+const maximumWaitTimeExceeded = (config: IConfig) => {
+    return () => {
+        stopCheckingReadiness()
+        const items = []
+        dependencyStateItems.forEach(item => {
+            items.push({
+                name: item.name,
+                data: item.data,
+                ready: item.ready
+            })
+        })
+
+        if (informationLogger) {
+            const suffix  = config.logOutCriticalDependenciesOnFailure === true ? ` Critical dependencies: ${JSON.stringify(items)}` : ''
+            informationLogger?.log(`All critical dependencies did not become healthy.${suffix}`)
+        }
+
+        // @ts-ignore
+        if (global.ExpressServiceReadinessTests === undefined)
+            process.exit(1)
+    }
 }
 
 const checkServiceReadiness = (dependencies: IDependency[], config: IConfig) => {
@@ -217,7 +235,7 @@ const checkServiceReadiness = (dependencies: IDependency[], config: IConfig) => 
     }
 
     const maximumWaitTimeForServiceReadinessInMilliseconds = config.maximumWaitTimeForServiceReadinessInMilliseconds ?? DefaultConfig.maximumWaitTimeForServiceReadinessInMilliseconds
-    maximumWaitTimeTimeout = setTimeout(maximumWaitTimeExceeded, maximumWaitTimeForServiceReadinessInMilliseconds)
+    maximumWaitTimeTimeout = setTimeout(maximumWaitTimeExceeded(config), maximumWaitTimeForServiceReadinessInMilliseconds)
 
     criticalDependencies.forEach(criticalDependencies => {
         const { name, data, isReady } = criticalDependencies
