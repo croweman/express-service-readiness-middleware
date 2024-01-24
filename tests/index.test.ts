@@ -14,7 +14,7 @@ describe('express-service-readiness-middleware', () => {
 
     describe('createReadinessMiddleware', () => {
         it('Logs message when critical dependencies do not become healthy after a timeout period', async () => {
-            const dependencies:IDependency[] = [
+            const dependencies: IDependency[] = [
                 {
                     data: {
                         url: "http://test-host.com/test"
@@ -59,13 +59,13 @@ describe('express-service-readiness-middleware', () => {
             createReadinessMiddleware(dependencies, {
                 retryIntervalInMilliseconds: 10,
                 maximumWaitTimeForServiceReadinessInMilliseconds: 1000,
-                logOutCriticalDependenciesOnFailure: true
+                logOutDependenciesDataOnFailure: true
             })
 
             await waitUntil(() => {
-                const message = messages.find(x => x.startsWith('All critical dependencies'))
-                expect(message).toBeDefined()
-                expect(message).toEqual('All critical dependencies did not become healthy. Critical dependencies: [{"name":"test","data":{"url":"http://test-host.com/test"},"ready":true},{"name":"test3","data":{"url":"http://test-host3.com/test"},"ready":false}]')
+                expect(messages.indexOf("critical dependency 'test' is ready") !== -1).toBeTruthy()
+                expect(messages.indexOf("critical dependency 'test3' is not ready yet, data: {\"url\":\"http://test-host3.com/test\"}") !== -1).toBeTruthy()
+                expect(messages.indexOf('All critical dependencies did not become healthy. Critical dependencies: [{"name":"test","data":{"url":"http://test-host.com/test"},"ready":true},{"name":"test3","data":{"url":"http://test-host3.com/test"},"ready":false}]') !== -1).toBeTruthy()
             })
         })
     })

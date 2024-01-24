@@ -14,15 +14,15 @@ export interface IConfig {
     maximumWaitTimeForServiceReadinessInMilliseconds?: number
     /** paths to still route traffic to even if dependencies are not yet ready, default empty array */
     whitelistedPaths?: string[]
-    /** indicates whether critical dependency information should be logged out if critical dependencies fail to become ready */
-    logOutCriticalDependenciesOnFailure?: boolean
+    /** indicates whether dependency information should be logged out if dependencies fail to become ready */
+    logOutDependenciesDataOnFailure?: boolean
 }
 
 const DefaultConfig:IConfig = {
     retryIntervalInMilliseconds: 2000,
     maximumWaitTimeForServiceReadinessInMilliseconds: 30000,
     whitelistedPaths: [],
-    logOutCriticalDependenciesOnFailure: true
+    logOutDependenciesDataOnFailure: false
 }
 
 /** Dependency interface */
@@ -82,6 +82,7 @@ const dependencyStateItems:Array<IDependencyStateItem> = []
 let informationLogger:ILogger
 let ready:Boolean = false
 let maximumWaitTimeTimeout:NodeJS.Timeout
+let serviceConfiguration:IConfig = undefined
 
 /**
  * Creates the service readiness middleware
@@ -96,6 +97,8 @@ export const createReadinessMiddleware = (dependencies: IDependency[], config?: 
             configuration[key] = DefaultConfig[key]
         }
     })
+
+    serviceConfiguration = configuration
 
     checkServiceReadiness(dependencies, configuration)
     let pathsToWhitelist:string[] = []
@@ -194,10 +197,10 @@ const checkDependencyHealth = async (dependency: IDependency): Promise<boolean> 
     try {
         const healthyFunc = dependency.isHealthy ? dependency.isHealthy : dependency.isReady
         healthy = await healthyFunc()
-        informationLogger?.log(`critical dependency '${dependency.name}' is ${healthy ? 'healthy' : 'not healthy'}`)
+        informationLogger?.log(`dependency '${dependency.name}' is ${healthy ? 'healthy' : 'not healthy'}${!healthy && serviceConfiguration?.logOutDependenciesDataOnFailure ? ', data: ' + JSON.stringify(dependency.data) : ''}`)
     } catch (err) {
         // @ts-ignore
-        informationLogger?.log(`An error occurred while checking health for dependency '${dependency.name}', error: ${err.message || err}`)
+        informationLogger?.log(`An error occurred while checking health for dependency '${dependency.name}'${serviceConfiguration?.logOutDependenciesDataOnFailure ? ', data: ' + JSON.stringify(dependency.data) : ''}, error: ${err.message || err}`)
     }
 
     return healthy
@@ -216,7 +219,7 @@ const maximumWaitTimeExceeded = (config: IConfig) => {
         })
 
         if (informationLogger) {
-            const suffix  = config.logOutCriticalDependenciesOnFailure === true ? ` Critical dependencies: ${JSON.stringify(items)}` : ''
+            const suffix  = config.logOutDependenciesDataOnFailure === true ? ` Critical dependencies: ${JSON.stringify(items)}` : ''
             informationLogger?.log(`All critical dependencies did not become healthy.${suffix}`)
         }
 
@@ -278,10 +281,10 @@ const checkDependencyReadiness = async (dependencyStateItem: IDependencyStateIte
             return
         }
 
-        informationLogger?.log(`critical dependency '${dependencyStateItem.name}' is not ready yet`)
+        informationLogger?.log(`critical dependency '${dependencyStateItem.name}' is not ready yet${serviceConfiguration.logOutDependenciesDataOnFailure ? ', data: ' + JSON.stringify(dependencyStateItem.data) : ''}`)
     } catch (err) {
         // @ts-ignore
-        informationLogger?.log(`An error occurred while checking health for critical dependency '${dependencyStateItem.name}', error: ${err.message || err}`)
+        informationLogger?.log(`An error occurred while checking health for critical dependency '${dependencyStateItem.name}'${serviceConfiguration.logOutDependenciesDataOnFailure ? ', data: ' + JSON.stringify(dependencyStateItem.data) : ''}, error: ${err.message || err}`)
     }
 
     const checkHealthAgain = () => checkDependencyReadiness(dependencyStateItem)

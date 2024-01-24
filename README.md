@@ -16,7 +16,7 @@ Specific routes can be whitelisted to be exposed if critical dependencies are no
 With [npm](http://npmjs.org)
 
 ```bash  
-$ npm install express-service-readiness-middleware@1.0.19 --save
+$ npm install express-service-readiness-middleware@1.0.20 --save
 ```  
   
 ## Example usage  
@@ -97,7 +97,7 @@ Array of dependency objects.  A dependency has the following properties:
 - `retryIntervalInMilliseconds`: (default: `2000`) Interval in milliseconds in which to check if a dependency is ready.
 - `maximumWaitTimeForServiceReadinessInMilliseconds`: (default: `30000`) Maximum time in milliseconds to wait for all dependencies to be ready.
 - `whitelistedPaths`: (default: `[]`) Paths to still route traffic to even if dependencies are not yet ready.
-- `logOutCriticalDependenciesOnFailure`: (default: `true`) Indicates whether critical dependency information should be logged out if critical dependencies fail to become ready
+- `logOutDependenciesDataOnFailure`: (default: `false`) Indicates whether dependency information should be logged out if dependencies fail to become ready.
 
 ## checkDependenciesHealth
 
