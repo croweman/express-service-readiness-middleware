@@ -4,7 +4,7 @@
   "description": "This module provides express middleware for determining whether routes are exposed based on service critical dependency health.",
   "repository": {
     "type": "git",
-    "url": "git://github.com/croweman/express-service-readiness-middleware.git"
+    "url": "git+https://github.com/croweman/express-service-readiness-middleware.git"
   },
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
